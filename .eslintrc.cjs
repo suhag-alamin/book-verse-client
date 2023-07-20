@@ -19,12 +19,10 @@ module.exports = {
   plugins: ['react-refresh'],
   rules: {
     'react-refresh/only-export-components': 'warn',
-    '@typescript-eslint/no-non-null-assertion': 'off',
     'no-unused-vars': 'error',
     'prefer-const': 'error',
     'no-unused-expressions': 'error',
     'no-console': 'warn',
     'no-undef': 'error',
-    '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
   },
 };
