@@ -3,7 +3,7 @@ import logo from '../assets/images/logo.png';
 
 const Footer = () => {
   return (
-    <footer className="mt-auto w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
+    <footer className="mt-auto w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto border-t-bookVersePrimary border-t">
       <div className="text-center">
         <div className="text-center">
           <Link to="/">

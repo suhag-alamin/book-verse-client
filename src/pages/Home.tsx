@@ -1,7 +1,9 @@
+import Hero from '../components/Home/Hero';
+
 const Home = () => {
   return (
     <div>
-      <p className="text-bookVersePrimary text-2xl font-bold">hello</p>
+      <Hero />
     </div>
   );
 };
