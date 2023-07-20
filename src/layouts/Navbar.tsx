@@ -1,8 +1,8 @@
-import { Dialog, Popover } from '@headlessui/react';
-import { useState } from 'react';
-import { HiOutlineMenu, HiX } from 'react-icons/hi';
-import { Link } from 'react-router-dom';
-import logo from '../assets/images/logo.png';
+import { Dialog, Popover } from "@headlessui/react";
+import { useState } from "react";
+import { HiOutlineMenu, HiX } from "react-icons/hi";
+import { Link } from "react-router-dom";
+import logo from "../assets/images/logo.png";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
@@ -31,7 +31,7 @@ const Navbar = () => {
         </div>
         <Popover.Group className="hidden lg:flex lg:gap-x-12">
           <Link
-            to="/"
+            to="/books"
             className="text-sm font-semibold leading-6 text-gray-900"
           >
             All Books
@@ -87,7 +87,7 @@ const Navbar = () => {
             <div className="-my-6 divide-y divide-gray-500/10">
               <div className="space-y-2 py-6">
                 <Link
-                  to="/"
+                  to="/books"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   All Books

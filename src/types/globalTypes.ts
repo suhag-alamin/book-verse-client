@@ -13,6 +13,7 @@ interface IAuthor {
 export interface IBook {
   _id: string;
   title: string;
+  description: string;
   image: string;
   publicationYear: string;
   createdAt: string;

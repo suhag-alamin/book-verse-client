@@ -7,8 +7,6 @@ const FeaturedBook = () => {
   const limit = 10;
   const { data, isLoading } = useGetBooksQuery(limit);
 
-  console.log(data?.data, isLoading);
-
   return (
     <div className="py-8">
       <div className="text-center">
