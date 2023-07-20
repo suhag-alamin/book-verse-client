@@ -1,12 +1,9 @@
-/* eslint-env node */
-
 module.exports = {
   root: true,
-  env: { browser: true, es2020: true },
+  env: { browser: true, es2020: true, node: true },
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:react-hooks/recommended',
   ],
   parser: '@typescript-eslint/parser',
@@ -19,10 +16,14 @@ module.exports = {
   plugins: ['react-refresh'],
   rules: {
     'react-refresh/only-export-components': 'warn',
+    'react-refresh/only-export-components': 'warn',
     'no-unused-vars': 'error',
     'prefer-const': 'error',
     'no-unused-expressions': 'error',
     'no-console': 'warn',
     'no-undef': 'error',
+  },
+  globals: {
+    process: 'readonly',
   },
 };

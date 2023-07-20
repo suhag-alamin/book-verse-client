@@ -4,8 +4,8 @@ import { HiOutlineMenu, HiX } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
 import logo from '../assets/images/logo.png';
 
-export default function Example() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+const Navbar = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
   return (
     <header className="bg-white border-b">
@@ -126,4 +126,6 @@ export default function Example() {
       </Dialog>
     </header>
   );
-}
+};
+
+export default Navbar;
