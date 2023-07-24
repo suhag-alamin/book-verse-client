@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useLoginMutation } from "../redux/features/auth/authApi";
 import { setCredentials } from "../redux/features/auth/authSlice";
@@ -26,7 +26,11 @@ const Login: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const location = useLocation();
+
   useEffect(() => {
+    const redirectPath = location?.state?.from ? location?.state?.from : "/";
+
     if (isSuccess) {
       const {
         data: { accessToken },
@@ -43,7 +47,7 @@ const Login: React.FC = () => {
 
       toast.success("Login successful. Welcome back!");
 
-      navigate("/");
+      navigate(redirectPath);
     }
     if (isError) {
       const signUpError = error as ICustomError;

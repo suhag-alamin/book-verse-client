@@ -13,7 +13,6 @@ const Navbar = () => {
 
   const {
     user: { email },
-    token,
   } = useAppSelector((state) => state.auth);
 
   return (
@@ -59,8 +58,14 @@ const Navbar = () => {
           </Link>
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end gap-4">
-          {email || token ? (
-            <button onClick={() => dispatch(logout())}>Log Out</button>
+          {email ? (
+            <button
+              onClick={() => dispatch(logout())}
+              // make outline button using tailwind
+              className="py-2 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-bookVersePrimary font-semibold hover:text-white focus:text-white hover:bg-bookVerseTertiary focus:outline-none focus:ring-2 focus:ring-bookVerseTertiary focus:ring-offset-2 transition-all text-sm"
+            >
+              Log Out
+            </button>
           ) : (
             <>
               <Link
@@ -122,7 +127,7 @@ const Navbar = () => {
                 </Link>
               </div>
               <div className="py-6">
-                {email || token ? (
+                {email ? (
                   <button onClick={() => dispatch(logout())}>Log Out</button>
                 ) : (
                   <>

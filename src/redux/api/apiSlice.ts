@@ -3,7 +3,7 @@ import {
   createApi,
   fetchBaseQuery,
 } from "@reduxjs/toolkit/query/react";
-import { logout, setCredentials } from "../features/auth/authSlice";
+import { setCredentials, logout } from "../features/auth/authSlice";
 import { RootState } from "../store";
 
 const baseUrl =
@@ -33,7 +33,7 @@ const baseQueryWithReAuth = async (
 
   if (result?.error?.status === 403) {
     console.log("sending refresh token");
-    // send refresh token to get new access token
+    // send refresh token to get a new access token
 
     const refreshResult = await baseQuery(
       "/auth/refresh-token",

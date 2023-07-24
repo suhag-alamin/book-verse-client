@@ -5,7 +5,6 @@ interface IAuthState {
     email: string | null;
   };
   token: string | null;
-  test: string;
 }
 
 const initialState: IAuthState = {
@@ -13,16 +12,12 @@ const initialState: IAuthState = {
     email: null,
   },
   token: null,
-  test: "test",
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    // setUser: (state, action: PayloadAction<string | null>) => {
-    //   state.user.email = action.payload;
-    // },
     setCredentials: (state, action) => {
       const { email, accessToken } = action.payload;
       state.user.email = email;
