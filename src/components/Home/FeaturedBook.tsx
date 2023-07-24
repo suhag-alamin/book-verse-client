@@ -5,7 +5,7 @@ import BookCard from "../Shared/BookCard";
 
 const FeaturedBook = () => {
   const limit = 10;
-  const { data, isLoading } = useGetBooksQuery(limit);
+  const { data, isLoading, isError } = useGetBooksQuery(limit);
 
   return (
     <div className="py-8">
@@ -35,6 +35,13 @@ const FeaturedBook = () => {
                 <BookCard book={book} />
               </div>
             ))}
+          </div>
+        )}
+        {isError && (
+          <div>
+            <p className="text-red-500 text-center my-6">
+              Something went wrong, try again later
+            </p>
           </div>
         )}
       </div>

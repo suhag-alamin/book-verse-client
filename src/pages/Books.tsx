@@ -6,8 +6,12 @@ import { IBook } from "../types/globalTypes";
 
 const Books = () => {
   const [page, setPage] = useState<number>(1);
+  const limit = 9;
 
-  const { data, isLoading } = useGetBooksWithPaginationQuery(page);
+  const { data, isLoading, isError } = useGetBooksWithPaginationQuery({
+    page,
+    limit,
+  });
 
   const [currentPage, setCurrentPage] = useState<number>(data?.meta?.page || 1);
 
@@ -34,6 +38,13 @@ const Books = () => {
               <BookCard book={book} />
             </div>
           ))}
+        </div>
+      )}
+      {isError && (
+        <div>
+          <p className="text-red-500 text-center my-6">
+            Something went wrong, try again later
+          </p>
         </div>
       )}
 

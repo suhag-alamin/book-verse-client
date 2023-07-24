@@ -6,7 +6,7 @@ const bookApi = api.injectEndpoints({
       query: (limit) => (limit ? `/book?limit=${limit}` : "/book"),
     }),
     getBooksWithPagination: builder.query({
-      query: (page) => `/book?page=${page}&limit=9`,
+      query: ({ page, limit }) => `/book?page=${page}&limit=${limit}`,
     }),
   }),
 });
