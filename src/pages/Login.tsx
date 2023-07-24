@@ -54,7 +54,7 @@ const Login: React.FC = () => {
 
       toast.error(signUpError?.data?.message);
     }
-  }, [isSuccess, navigate, isError, error, data, dispatch, email]);
+  }, [isSuccess, navigate, isError, error, data, dispatch, email, location]);
 
   return (
     <div className="w-full max-w-md mx-auto p-6">

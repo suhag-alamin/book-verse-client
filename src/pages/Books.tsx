@@ -3,6 +3,7 @@ import BookCard from "../components/Shared/BookCard";
 import Pagination from "../components/Shared/Pagination";
 import { useGetBooksWithPaginationQuery } from "../redux/features/book/bookApi";
 import { IBook } from "../types/globalTypes";
+import Loading from "../components/Shared/Loading";
 
 const Books = () => {
   const [page, setPage] = useState<number>(1);
@@ -22,15 +23,7 @@ const Books = () => {
   return (
     <div>
       {isLoading ? (
-        <div className="flex justify-center my-6">
-          <div
-            className="animate-spin inline-block w-8 h-8 border-[3px] border-current border-t-transparent text-bookVerseTertiary rounded-full"
-            role="status"
-            aria-label="loading"
-          >
-            <span className="sr-only">Loading...</span>
-          </div>
-        </div>
+        <Loading />
       ) : (
         <div className="grid grid-cols-12 gap-4 mt-8">
           {data?.data?.map((book: IBook) => (

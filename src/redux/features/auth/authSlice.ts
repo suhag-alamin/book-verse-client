@@ -5,6 +5,7 @@ interface IAuthState {
     email: string | null;
   };
   token: string | null;
+  isLoading: boolean;
 }
 
 const initialState: IAuthState = {
@@ -12,6 +13,7 @@ const initialState: IAuthState = {
     email: null,
   },
   token: null,
+  isLoading: true,
 };
 
 const authSlice = createSlice({
@@ -22,10 +24,12 @@ const authSlice = createSlice({
       const { email, accessToken } = action.payload;
       state.user.email = email;
       state.token = accessToken;
+      state.isLoading = false;
     },
     logout: (state) => {
       state.user.email = null;
       state.token = null;
+      state.isLoading = false;
 
       // remove access token from local storage
       localStorage.removeItem("accessToken");

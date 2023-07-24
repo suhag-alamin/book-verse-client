@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useGetBooksQuery } from "../../redux/features/book/bookApi";
 import { IBook } from "../../types/globalTypes";
 import BookCard from "../Shared/BookCard";
+import Loading from "../Shared/Loading";
 
 const FeaturedBook = () => {
   const limit = 10;
@@ -19,15 +20,7 @@ const FeaturedBook = () => {
 
       <div>
         {isLoading ? (
-          <div className="flex justify-center my-6">
-            <div
-              className="animate-spin inline-block w-8 h-8 border-[3px] border-current border-t-transparent text-bookVerseTertiary rounded-full"
-              role="status"
-              aria-label="loading"
-            >
-              <span className="sr-only">Loading...</span>
-            </div>
-          </div>
+          <Loading />
         ) : (
           <div className="grid grid-cols-12 gap-4 mt-8">
             {data?.data?.map((book: IBook) => (
