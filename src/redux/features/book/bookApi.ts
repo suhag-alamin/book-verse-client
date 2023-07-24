@@ -5,8 +5,11 @@ const bookApi = api.injectEndpoints({
     getBooks: builder.query({
       query: (limit) => (limit ? `/book?limit=${limit}` : "/book"),
     }),
-    getBooksWithPagination: builder.query({
-      query: ({ page, limit }) => `/book?page=${page}&limit=${limit}`,
+    getAllBooks: builder.query({
+      query: ({ page, limit, search }) =>
+        search
+          ? `/book?searchTerm=${search}`
+          : `/book?page=${page}&limit=${limit}`,
     }),
     getSingleBook: builder.query({
       query: (id) => `/book/${id}`,
@@ -14,8 +17,5 @@ const bookApi = api.injectEndpoints({
   }),
 });
 
-export const {
-  useGetBooksQuery,
-  useGetBooksWithPaginationQuery,
-  useGetSingleBookQuery,
-} = bookApi;
+export const { useGetBooksQuery, useGetAllBooksQuery, useGetSingleBookQuery } =
+  bookApi;
