@@ -5,6 +5,7 @@ interface IAuthState {
     email: string | null;
   };
   token: string | null;
+  test: string;
 }
 
 const initialState: IAuthState = {
@@ -12,6 +13,7 @@ const initialState: IAuthState = {
     email: null,
   },
   token: null,
+  test: "test",
 };
 
 const authSlice = createSlice({

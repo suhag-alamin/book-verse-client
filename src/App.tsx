@@ -1,7 +1,7 @@
+import { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Layout from "./layouts/Layout";
-import { useEffect } from "react";
 import { setCredentials } from "./redux/features/auth/authSlice";
 import { useAppDispatch } from "./redux/hook";
 

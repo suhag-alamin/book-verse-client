@@ -3,8 +3,8 @@ import {
   createApi,
   fetchBaseQuery,
 } from "@reduxjs/toolkit/query/react";
-import { RootState } from "../store";
 import { logout, setCredentials } from "../features/auth/authSlice";
+import { RootState } from "../store";
 
 const baseUrl =
   import.meta.env.MODE === "development"
@@ -13,7 +13,7 @@ const baseUrl =
 
 const baseQuery = fetchBaseQuery({
   baseUrl,
-  // credentials: "include",
+  credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
 
@@ -32,6 +32,7 @@ const baseQueryWithReAuth = async (
   let result = await baseQuery(args, api, extraOptions);
 
   if (result?.error?.status === 403) {
+    console.log("sending refresh token");
     // send refresh token to get new access token
 
     const refreshResult = await baseQuery(
@@ -39,6 +40,8 @@ const baseQueryWithReAuth = async (
       api,
       extraOptions
     );
+
+    console.log(refreshResult);
 
     if (refreshResult?.data) {
       const user = api.getState().auth.user;
