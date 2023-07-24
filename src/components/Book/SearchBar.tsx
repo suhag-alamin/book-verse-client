@@ -31,13 +31,13 @@ const SearchBar = ({ setSearch }: IProps) => {
               </label>
               <input
                 type="search"
-                className="py-3 px-4 block w-full border border-bookVersePrimary shadow-sm rounded-md focus:z-10 focus:border-bookVerseTertiary focus:ring-bookVerseTertiary"
+                className="py-2 px-4 block w-full border border-bookVersePrimary shadow-sm rounded-md focus:z-10 focus:border-bookVerseTertiary focus:ring-bookVerseTertiary"
                 placeholder="Search for books"
                 {...register("search")}
               />
             </div>
             <button
-              className="w-full sm:w-auto whitespace-nowrap inline-flex justify-center items-center gap-x-3 text-center bg-bookVerseTertiary hover:border-bookVersePrimary border border-bookVerseTertiary text-white font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-bookVersePrimary focus:ring-offset-2 focus:ring-offset-bookVersePrimary transition py-3 px-4 "
+              className="w-full sm:w-auto whitespace-nowrap inline-flex justify-center items-center gap-x-3 text-center bg-bookVerseTertiary hover:border-bookVersePrimary border border-bookVerseTertiary text-white font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-bookVersePrimary focus:ring-offset-2 focus:ring-offset-bookVersePrimary transition py-2 px-4 "
               type="submit"
             >
               Search

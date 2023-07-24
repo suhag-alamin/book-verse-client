@@ -24,7 +24,10 @@ const FeaturedBook = () => {
         ) : (
           <div className="grid grid-cols-12 gap-4 mt-8">
             {data?.data?.map((book: IBook) => (
-              <div key={book?._id} className="col-span-4">
+              <div
+                key={book?._id}
+                className="col-span-12 sm:col-span-6 lg:col-span-4"
+              >
                 <BookCard book={book} />
               </div>
             ))}
