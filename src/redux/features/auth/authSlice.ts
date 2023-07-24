@@ -32,11 +32,14 @@ const authSlice = createSlice({
       state.isLoading = false;
 
       // remove access token from local storage
-      localStorage.removeItem("accessToken");
+      // localStorage.removeItem("accessToken");
+    },
+    toggleLoading: (state) => {
+      state.isLoading = !state.isLoading;
     },
   },
 });
 
-export const { setCredentials, logout } = authSlice.actions;
+export const { setCredentials, logout, toggleLoading } = authSlice.actions;
 
 export default authSlice.reducer;
