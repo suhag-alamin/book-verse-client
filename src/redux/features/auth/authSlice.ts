@@ -5,7 +5,6 @@ interface IAuthState {
     email: string | null;
   };
   token: string | null;
-  isLoading: boolean;
 }
 
 const initialState: IAuthState = {
@@ -13,7 +12,6 @@ const initialState: IAuthState = {
     email: null,
   },
   token: null,
-  isLoading: true,
 };
 
 const authSlice = createSlice({
@@ -24,22 +22,21 @@ const authSlice = createSlice({
       const { email, accessToken } = action.payload;
       state.user.email = email;
       state.token = accessToken;
-      state.isLoading = false;
     },
     logout: (state) => {
       state.user.email = null;
       state.token = null;
-      state.isLoading = false;
 
       // remove access token from local storage
-      // localStorage.removeItem("accessToken");
-    },
-    toggleLoading: (state) => {
-      state.isLoading = !state.isLoading;
+      localStorage.removeItem("accessToken");
+
+      // remove refresh token from cookie
+      document.cookie =
+        "refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     },
   },
 });
 
-export const { setCredentials, logout, toggleLoading } = authSlice.actions;
+export const { setCredentials, logout } = authSlice.actions;
 
 export default authSlice.reducer;

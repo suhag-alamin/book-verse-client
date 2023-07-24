@@ -1,6 +1,7 @@
 import { FetchArgs } from "@reduxjs/toolkit/dist/query/fetchBaseQuery";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { setCredentials } from "../features/auth/authSlice";
+import { toast } from "react-toastify";
+import { logout, setCredentials } from "../features/auth/authSlice";
 import { RootState } from "../store";
 
 const baseUrl =
@@ -32,6 +33,7 @@ interface RefreshTokenResponse {
 }
 
 const isRefreshTokenResponse = (data: any): data is RefreshTokenResponse => {
+  if (!data) return false;
   return (
     "data" in data &&
     "statusCode" in data &&
@@ -54,6 +56,11 @@ const baseQueryWithReAuth = async (
       extraOptions
     );
 
+    if (refreshResult.error?.status === 403) {
+      api.dispatch(logout());
+      toast.error("Please login again");
+    }
+
     if (isRefreshTokenResponse(refreshResult?.data)) {
       const data: RefreshTokenResponse = refreshResult.data;
 
@@ -67,8 +74,6 @@ const baseQueryWithReAuth = async (
       );
 
       result = await baseQuery(args, api, extraOptions);
-    } else {
-      // api.dispatch(logout());
     }
   }
   return result;

@@ -4,10 +4,11 @@ import { useGetSingleBookQuery } from "../redux/features/book/bookApi";
 const BookDetails = () => {
   const { id } = useParams<{ id: string }>();
 
-  const { data, isLoading } = useGetSingleBookQuery(id);
-  const { data: book } = data;
+  const { data } = useGetSingleBookQuery(id);
+
+  // const { data: book } = data;
   console.log(data);
-  return <div>{book?.title}</div>;
+  return <div>test</div>;
 };
 
 export default BookDetails;

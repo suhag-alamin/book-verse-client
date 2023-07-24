@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import Loading from "../components/Shared/Loading";
 import { useAppSelector } from "../redux/hook";
@@ -8,8 +8,18 @@ interface IProps {
 }
 
 const PrivateRoute = ({ children }: IProps) => {
-  const { user, isLoading } = useAppSelector((state) => state.auth);
+  const { user } = useAppSelector((state) => state.auth);
   const { pathname } = useLocation();
+
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (user?.email) {
+      setIsLoading(false);
+    } else {
+      setIsLoading(false);
+    }
+  }, [user?.email]);
 
   if (isLoading) {
     return <Loading />;
