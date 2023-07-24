@@ -1,8 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { useLoginMutation } from "../redux/features/auth/authApi";
 import { toast } from "react-toastify";
+import { useLoginMutation } from "../redux/features/auth/authApi";
+import { setCredentials } from "../redux/features/auth/authSlice";
+import { useAppDispatch } from "../redux/hook";
 import { ICustomError } from "../types/globalTypes";
 
 type FormValues = {
@@ -11,21 +13,35 @@ type FormValues = {
 };
 
 const Login: React.FC = () => {
+  const [email, setEmail] = useState<string>("");
+
   const [login, { isSuccess, isError, error, data }] = useLoginMutation();
 
   const { register, handleSubmit } = useForm<FormValues>();
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    login(data);
+  const onSubmit: SubmitHandler<FormValues> = (userData) => {
+    setEmail(userData.email);
+    login(userData);
   };
 
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
   useEffect(() => {
     if (isSuccess) {
-      toast.success("Login successful. Welcome back!");
-      console.log(data.data.accessToken);
+      const {
+        data: { accessToken },
+      } = data;
 
+      dispatch(
+        setCredentials({
+          accessToken,
+          email,
+        })
+      );
       // set token to local storage
       localStorage.setItem("accessToken", data.data.accessToken);
+
+      toast.success("Login successful. Welcome back!");
 
       navigate("/");
     }
@@ -34,7 +50,7 @@ const Login: React.FC = () => {
 
       toast.error(signUpError?.data?.message);
     }
-  }, [isSuccess, navigate, isError, error]);
+  }, [isSuccess, navigate, isError, error, data, dispatch, email]);
 
   return (
     <div className="w-full max-w-md mx-auto p-6">

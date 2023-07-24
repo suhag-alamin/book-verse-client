@@ -3,9 +3,18 @@ import { useState } from "react";
 import { HiOutlineMenu, HiX } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import logo from "../assets/images/logo.png";
+import { logout } from "../redux/features/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "../redux/hook";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
+
+  const dispatch = useAppDispatch();
+
+  const {
+    user: { email },
+    token,
+  } = useAppSelector((state) => state.auth);
 
   return (
     <header className="bg-white border-b">
@@ -50,18 +59,24 @@ const Navbar = () => {
           </Link>
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end gap-4">
-          <Link
-            to="/login"
-            className="text-sm font-semibold leading-6 text-gray-900"
-          >
-            Log In <span aria-hidden="true">&rarr;</span>
-          </Link>
-          <Link
-            to="/signup"
-            className="text-sm font-semibold leading-6 text-gray-900"
-          >
-            Sign Up <span aria-hidden="true">&rarr;</span>
-          </Link>
+          {email || token ? (
+            <button onClick={() => dispatch(logout())}>Log Out</button>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="text-sm font-semibold leading-6 text-gray-900"
+              >
+                Log In <span aria-hidden="true">&rarr;</span>
+              </Link>
+              <Link
+                to="/signup"
+                className="text-sm font-semibold leading-6 text-gray-900"
+              >
+                Sign Up <span aria-hidden="true">&rarr;</span>
+              </Link>
+            </>
+          )}
         </div>
       </nav>
       <Dialog
@@ -107,18 +122,24 @@ const Navbar = () => {
                 </Link>
               </div>
               <div className="py-6">
-                <Link
-                  to="/login"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >
-                  Log in
-                </Link>
-                <Link
-                  to="/signup"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >
-                  Sign Up
-                </Link>
+                {email || token ? (
+                  <button onClick={() => dispatch(logout())}>Log Out</button>
+                ) : (
+                  <>
+                    <Link
+                      to="/login"
+                      className="text-sm font-semibold leading-6 text-gray-900"
+                    >
+                      Log In <span aria-hidden="true">&rarr;</span>
+                    </Link>
+                    <Link
+                      to="/signup"
+                      className="text-sm font-semibold leading-6 text-gray-900"
+                    >
+                      Sign Up <span aria-hidden="true">&rarr;</span>
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </div>
