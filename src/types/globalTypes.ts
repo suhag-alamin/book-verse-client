@@ -34,3 +34,17 @@ export interface IApiResponse<T> {
   meta?: IMeta;
   data?: T;
 }
+
+export interface IErrorMessages {
+  path: string;
+  message: string;
+}
+
+export interface ICustomError {
+  status: number;
+  data: {
+    success: boolean;
+    message: string;
+    errorMessages: IErrorMessages[];
+  };
+}

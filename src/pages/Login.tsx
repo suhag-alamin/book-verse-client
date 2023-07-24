@@ -1,14 +1,41 @@
+import React, { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useLoginMutation } from "../redux/features/auth/authApi";
+import { toast } from "react-toastify";
+import { ICustomError } from "../types/globalTypes";
 
 type FormValues = {
   email: string;
   password: string;
 };
 
-const Login = () => {
+const Login: React.FC = () => {
+  const [login, { isSuccess, isError, error, data }] = useLoginMutation();
+
   const { register, handleSubmit } = useForm<FormValues>();
-  const onSubmit: SubmitHandler<FormValues> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<FormValues> = (data) => {
+    login(data);
+  };
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Login successful. Welcome back!");
+      console.log(data.data.accessToken);
+
+      // set token to local storage
+      localStorage.setItem("accessToken", data.data.accessToken);
+
+      navigate("/");
+    }
+    if (isError) {
+      const signUpError = error as ICustomError;
+
+      toast.error(signUpError?.data?.message);
+    }
+  }, [isSuccess, navigate, isError, error]);
+
   return (
     <div className="w-full max-w-md mx-auto p-6">
       <div className="mt-7 bg-white border border-bookVersePrimary  rounded-xl shadow-sm">

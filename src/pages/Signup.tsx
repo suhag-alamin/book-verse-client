@@ -1,19 +1,22 @@
+import React, { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { useSignupMutation } from "../redux/features/auth/authApi";
+import { ICustomError } from "../types/globalTypes";
 
-type FormValues = {
+interface IFormValues {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
-};
+}
 
-const Signup = () => {
-  const [signup, { isSuccess, data }] = useSignupMutation();
+const Signup: React.FC = () => {
+  const [signUp, { isSuccess, isError, error }] = useSignupMutation();
 
-  const { register, handleSubmit } = useForm<FormValues>();
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
+  const { register, handleSubmit } = useForm<IFormValues>();
+  const onSubmit: SubmitHandler<IFormValues> = (data) => {
     const { firstName, lastName, email, password } = data;
     const signUpData = {
       name: {
@@ -23,12 +26,21 @@ const Signup = () => {
       email,
       password,
     };
-    console.log(signUpData);
-    signup(signUpData);
+    signUp(signUpData);
   };
 
-  console.log(isSuccess);
-  console.log(data);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Sign up successful. Please login");
+      navigate("/login");
+    }
+    if (isError) {
+      const signUpError = error as ICustomError;
+
+      toast.error(signUpError?.data?.message);
+    }
+  }, [isSuccess, navigate, isError, error]);
 
   return (
     <div className="w-full max-w-xl mx-auto p-6">
@@ -60,6 +72,7 @@ const Signup = () => {
                         type="text"
                         id="firstName"
                         className="py-3 px-4 block w-full border border-bookVersePrimary rounded-md text-sm focus:border-bookVerseTertiary focus:ring-bookVerseTertiary"
+                        placeholder="John"
                         required
                         {...register("firstName", {
                           required: true,
@@ -76,6 +89,7 @@ const Signup = () => {
                         type="text"
                         id="lastName"
                         className="py-3 px-4 block w-full border border-bookVersePrimary rounded-md text-sm focus:border-bookVerseTertiary focus:ring-bookVerseTertiary"
+                        placeholder="Doe"
                         required
                         {...register("lastName", {
                           required: true,
@@ -94,6 +108,7 @@ const Signup = () => {
                       type="email"
                       id="email"
                       className="py-3 px-4 block w-full border border-bookVersePrimary rounded-md text-sm focus:border-bookVerseTertiary focus:ring-bookVerseTertiary"
+                      placeholder="john@gmail.com"
                       required
                       {...register("email", {
                         required: true,
@@ -114,6 +129,7 @@ const Signup = () => {
                       type="password"
                       id="password"
                       className="py-3 px-4 block w-full border border-bookVersePrimary rounded-md text-sm focus:border-bookVerseTertiary focus:ring-bookVerseTertiary"
+                      placeholder="******"
                       required
                       {...register("password", {
                         required: true,
