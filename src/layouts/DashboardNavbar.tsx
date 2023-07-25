@@ -1,7 +1,7 @@
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { HiOutlineMenu, HiX } from "react-icons/hi";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import logo from "../assets/images/logo.png";
 import { logout } from "../redux/features/auth/authSlice";
 import { useAppDispatch } from "../redux/hook";
@@ -40,7 +40,9 @@ export default function DashboardNavbar() {
                 <div className="flex h-16 items-center justify-between">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
-                      <img className="h-8 w-8" src={logo} alt="Your Company" />
+                      <Link to="/">
+                        <img className="h-8 w-8" src={logo} alt="BookVerse" />
+                      </Link>
                     </div>
                     <div className="hidden md:block">
                       <div className="ml-10 flex items-baseline space-x-4">
@@ -150,7 +152,7 @@ export default function DashboardNavbar() {
                           navInfo.isActive
                             ? "bg-gray-900 text-white"
                             : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                          "rounded-md px-3 py-2 text-sm font-medium"
+                          "rounded-md px-3 py-2 text-sm font-medium block"
                         )
                       }
                       end={true}
