@@ -79,6 +79,12 @@ const bookApi = api.injectEndpoints({
     getReadingList: builder.query({
       query: () => `/reading-list`,
     }),
+    updateReadingListStatus: builder.mutation({
+      query: (id) => ({
+        url: `/reading-list/${id}`,
+        method: "PATCH",
+      }),
+    }),
   }),
 });
 
@@ -96,4 +102,5 @@ export const {
   useGetWishlistQuery,
   useAddToReadingListMutation,
   useGetReadingListQuery,
+  useUpdateReadingListStatusMutation,
 } = bookApi;

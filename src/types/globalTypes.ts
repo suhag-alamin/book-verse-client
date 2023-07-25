@@ -21,6 +21,25 @@ export interface IBook {
   updatedAt: string;
   author: IAuthor;
 }
+export interface IBookForReadingList {
+  _id: string;
+  title: string;
+  description: string;
+  image: string;
+  publicationYear: string;
+  genre: string;
+  createdAt: string;
+  updatedAt: string;
+  author: IAuthor;
+  isFinished: boolean;
+}
+
+export interface IReadingList {
+  _id: string;
+  book: IBookForReadingList;
+  user: IAuthor;
+  isFinished: boolean;
+}
 
 interface IMeta {
   page: number;
