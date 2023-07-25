@@ -3,7 +3,10 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { IoReaderOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useAddToWishlistMutation } from "../../redux/features/book/bookApi";
+import {
+  useAddToReadingListMutation,
+  useAddToWishlistMutation,
+} from "../../redux/features/book/bookApi";
 import { useAppSelector } from "../../redux/hook";
 import { IBook } from "../../types/globalTypes";
 
@@ -12,6 +15,10 @@ interface IBookCardProps {
 }
 
 const BookCard = ({ book }: IBookCardProps) => {
+  // get user id
+  const { _id } = useAppSelector((state) => state.auth.user);
+
+  // add to wishlist
   const [
     addToWishList,
     {
@@ -21,8 +28,17 @@ const BookCard = ({ book }: IBookCardProps) => {
     },
   ] = useAddToWishlistMutation();
 
-  const { _id } = useAppSelector((state) => state.auth.user);
+  // add to reading list
+  const [
+    addToReadingList,
+    {
+      isLoading: isAddReadingListLoading,
+      isSuccess: isAddReadingListSuccess,
+      data: readingListData,
+    },
+  ] = useAddToReadingListMutation();
 
+  // handle add to wishlist
   const handleAddToWishlist = (book: IBook) => {
     const data = {
       book: book._id,
@@ -31,14 +47,42 @@ const BookCard = ({ book }: IBookCardProps) => {
     addToWishList(data);
   };
 
+  // handle add to reading list
+  const handleAddToReadingList = (book: IBook) => {
+    const data = {
+      book: book._id,
+      user: _id,
+    };
+    addToReadingList(data);
+  };
+
+  // add to wishlist toast
   useEffect(() => {
     if (isAddWishlistSuccess && wishlistData?.data === null) {
-      toast.info("Book already added to wishlist!");
+      toast.info("Book already added to wishlist!", {
+        toastId: "wishlist",
+      });
     }
     if (isAddWishlistSuccess && wishlistData?.data !== null) {
-      toast.success("Book added to wishlist successfully!");
+      toast.success("Book added to wishlist successfully!", {
+        toastId: "wishlist",
+      });
     }
   }, [isAddWishlistSuccess, wishlistData]);
+
+  // add to reading list toast
+  useEffect(() => {
+    if (isAddReadingListSuccess && readingListData?.data === null) {
+      toast.info("Book already added to Reading List!", {
+        toastId: "wishlist",
+      });
+    }
+    if (isAddReadingListSuccess && readingListData?.data !== null) {
+      toast.success("Book added to Reading List successfully!", {
+        toastId: "wishlist",
+      });
+    }
+  }, [isAddReadingListSuccess, readingListData]);
 
   return (
     <div>
@@ -76,8 +120,10 @@ const BookCard = ({ book }: IBookCardProps) => {
                 <AiOutlineHeart />
               </button>
               <button
+                onClick={() => handleAddToReadingList(book)}
                 title="Add to Reading List"
                 className="mt-3 py-2 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-bookVersePrimary text-white hover:bg-bookVerseTertiary focus:outline-none focus:ring-2 focus:ring-bookVerseTertiary focus:ring-offset-2 transition-all text-x disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={isAddReadingListLoading}
               >
                 <IoReaderOutline />
               </button>

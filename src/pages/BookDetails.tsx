@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import Review from "../components/Book/Review";
 import Loading from "../components/Shared/Loading";
 import {
+  useAddToReadingListMutation,
   useAddToWishlistMutation,
   useDeleteBookMutation,
   useGetSingleBookQuery,
@@ -14,15 +15,23 @@ import { useAppSelector } from "../redux/hook";
 import { IBook, ICustomError } from "../types/globalTypes";
 
 const BookDetails = () => {
+  // navigate
+  const navigate = useNavigate();
+  // get user id
+  const { _id } = useAppSelector((state) => state.auth.user);
+  // get id from url
   const { id } = useParams<{ id: string }>();
 
+  // get book details
   const { data, isLoading, isError, isSuccess } = useGetSingleBookQuery(id);
 
+  // delete book
   const [
     deleteBook,
     { isError: isDeleteError, error: deleteError, isSuccess: isDeleteSuccess },
   ] = useDeleteBookMutation();
 
+  // add to wishlist
   const [
     addToWishList,
     {
@@ -32,14 +41,22 @@ const BookDetails = () => {
     },
   ] = useAddToWishlistMutation();
 
-  const { _id } = useAppSelector((state) => state.auth.user);
+  // add to reading list
+  const [
+    addToReadingList,
+    {
+      isLoading: isAddReadingListLoading,
+      isSuccess: isAddReadingListSuccess,
+      data: readingListData,
+    },
+  ] = useAddToReadingListMutation();
 
-  const navigate = useNavigate();
-
+  // edit book
   const handleEditBook = () => {
     navigate(`/dashboard/edit-book/${id}`);
   };
 
+  // delete book
   const handleDeleteBook = () => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this book?"
@@ -49,6 +66,7 @@ const BookDetails = () => {
     }
   };
 
+  // add to wishlist
   const handleAddToWishlist = (book: IBook) => {
     const data = {
       book: book._id,
@@ -56,7 +74,16 @@ const BookDetails = () => {
     };
     addToWishList(data);
   };
+  // add to reading list
+  const handleAddToReadingList = (book: IBook) => {
+    const data = {
+      book: book._id,
+      user: _id,
+    };
+    addToReadingList(data);
+  };
 
+  // delete toast
   useEffect(() => {
     if (isDeleteSuccess) {
       toast.success("Book deleted successfully!");
@@ -67,15 +94,35 @@ const BookDetails = () => {
     }
   }, [isDeleteSuccess, isDeleteError, deleteError, navigate]);
 
+  // add to wishlist toast
   useEffect(() => {
     if (isAddWishlistSuccess && wishlistData?.data === null) {
-      toast.info("Book already added to wishlist!");
+      toast.info("Book already added to wishlist!", {
+        toastId: "wishlist",
+      });
     }
     if (isAddWishlistSuccess && wishlistData?.data !== null) {
-      toast.success("Book added to wishlist successfully!");
+      toast.success("Book added to wishlist successfully!", {
+        toastId: "wishlist",
+      });
     }
   }, [isAddWishlistSuccess, wishlistData]);
 
+  // add to reading list toast
+  useEffect(() => {
+    if (isAddReadingListSuccess && readingListData?.data === null) {
+      toast.info("Book already added to Reading List!", {
+        toastId: "wishlist",
+      });
+    }
+    if (isAddReadingListSuccess && readingListData?.data !== null) {
+      toast.success("Book added to Reading List successfully!", {
+        toastId: "wishlist",
+      });
+    }
+  }, [isAddReadingListSuccess, readingListData]);
+
+  // loading
   if (isLoading) {
     return <Loading />;
   }
@@ -134,6 +181,8 @@ const BookDetails = () => {
                 <button
                   title="Add to Reading List"
                   className="mt-3 py-2 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-bookVersePrimary text-white hover:bg-bookVerseTertiary focus:outline-none focus:ring-2 focus:ring-bookVerseTertiary focus:ring-offset-2 transition-all text-x  disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={isAddReadingListLoading}
+                  onClick={() => handleAddToReadingList(data?.data)}
                 >
                   <IoReaderOutline />
                 </button>
