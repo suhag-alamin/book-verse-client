@@ -3,10 +3,10 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { IoReaderOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useAppSelector } from "../../redux/hook";
-import { IBook } from "../../types/globalTypes";
 import { useAddToReadingListMutation } from "../../redux/features/readingList/readingListApi";
 import { useAddToWishlistMutation } from "../../redux/features/wishlist/wishlistApi";
+import { useAppSelector } from "../../redux/hook";
+import { IBook } from "../../types/globalTypes";
 
 interface IBookCardProps {
   book: IBook;
@@ -14,7 +14,7 @@ interface IBookCardProps {
 
 const BookCard = ({ book }: IBookCardProps) => {
   // get user id
-  const { _id } = useAppSelector((state) => state.auth.user);
+  const { _id, email } = useAppSelector((state) => state.auth.user);
 
   // add to wishlist
   const [
@@ -108,24 +108,26 @@ const BookCard = ({ book }: IBookCardProps) => {
             >
               Details
             </Link>
-            <div className="flex gap-2">
-              <button
-                onClick={() => handleAddToWishlist(book)}
-                title="Add to Wishlist"
-                className="mt-3 py-2 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-bookVerseTertiary text-white hover:bg-bookVersePrimary focus:outline-none focus:ring-2 focus:ring-bookVersePrimary focus:ring-offset-2 transition-all text-x disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={isAddWishlistLoading}
-              >
-                <AiOutlineHeart />
-              </button>
-              <button
-                onClick={() => handleAddToReadingList(book)}
-                title="Add to Reading List"
-                className="mt-3 py-2 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-bookVersePrimary text-white hover:bg-bookVerseTertiary focus:outline-none focus:ring-2 focus:ring-bookVerseTertiary focus:ring-offset-2 transition-all text-x disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={isAddReadingListLoading}
-              >
-                <IoReaderOutline />
-              </button>
-            </div>
+            {email && (
+              <div className="flex gap-2">
+                <button
+                  onClick={() => handleAddToWishlist(book)}
+                  title="Add to Wishlist"
+                  className="mt-3 py-2 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-bookVerseTertiary text-white hover:bg-bookVersePrimary focus:outline-none focus:ring-2 focus:ring-bookVersePrimary focus:ring-offset-2 transition-all text-x disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={isAddWishlistLoading}
+                >
+                  <AiOutlineHeart />
+                </button>
+                <button
+                  onClick={() => handleAddToReadingList(book)}
+                  title="Add to Reading List"
+                  className="mt-3 py-2 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-bookVersePrimary text-white hover:bg-bookVerseTertiary focus:outline-none focus:ring-2 focus:ring-bookVerseTertiary focus:ring-offset-2 transition-all text-x disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={isAddReadingListLoading}
+                >
+                  <IoReaderOutline />
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
