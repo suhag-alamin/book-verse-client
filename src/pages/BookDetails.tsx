@@ -22,7 +22,7 @@ const BookDetails = () => {
   const navigate = useNavigate();
 
   const handleEditBook = () => {
-    navigate(`/book/edit/${id}`);
+    navigate(`/dashboard/edit-book/${id}`);
   };
 
   const handleDeleteBook = () => {

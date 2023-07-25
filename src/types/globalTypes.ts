@@ -1,4 +1,4 @@
-interface IAuthor {
+export interface IAuthor {
   _id: string;
   name: {
     firstName: string;
@@ -16,6 +16,7 @@ export interface IBook {
   description: string;
   image: string;
   publicationYear: string;
+  genre: string;
   createdAt: string;
   updatedAt: string;
   author: IAuthor;

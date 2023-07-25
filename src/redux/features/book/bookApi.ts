@@ -25,6 +25,9 @@ const bookApi = api.injectEndpoints({
           : `/book?page=${page}&limit=${limit}`,
       providesTags: ["book"],
     }),
+    getAllBooksByUserId: builder.query({
+      query: (id) => `/book/user/${id}`,
+    }),
     getSingleBook: builder.query({
       query: (id) => `/book/${id}`,
       providesTags: ["singleBook"],
@@ -63,6 +66,7 @@ export const {
   useAddBookMutation,
   useGetBooksQuery,
   useGetAllBooksQuery,
+  useGetAllBooksByUserIdQuery,
   useGetSingleBookQuery,
   useEditBookMutation,
   useDeleteBookMutation,

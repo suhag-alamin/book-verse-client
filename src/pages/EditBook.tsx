@@ -58,7 +58,7 @@ const EditBook = () => {
         <div className="p-4 sm:p-7">
           <div className="text-center">
             <h1 className="block text-2xl font-bold text-gray-800 ">
-              Add a book
+              Edit book
             </h1>
           </div>
 

@@ -3,12 +3,14 @@ import App from "../App";
 import AddBook from "../pages/AddBook";
 import BookDetails from "../pages/BookDetails";
 import Books from "../pages/Books";
+import Dashboard from "../pages/Dashboard";
+import EditBook from "../pages/EditBook";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import NotFound from "../pages/NotFound";
 import Signup from "../pages/Signup";
 import PrivateRoute from "./PrivateRoute";
-import EditBook from "../pages/EditBook";
+import BookList from "../components/Book/BookList";
 
 const routes = createBrowserRouter([
   {
@@ -31,22 +33,7 @@ const routes = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      {
-        path: "/add-book",
-        element: (
-          <PrivateRoute>
-            <AddBook />
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: "/book/edit/:id",
-        element: (
-          <PrivateRoute>
-            <EditBook />
-          </PrivateRoute>
-        ),
-      },
+
       {
         path: "/login",
         element: <Login />,
@@ -54,6 +41,32 @@ const routes = createBrowserRouter([
       {
         path: "/signup",
         element: <Signup />,
+      },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
+    children: [
+      {
+        index: true,
+        element: <BookList />,
+      },
+      {
+        path: "/dashboard/add-book",
+        element: (
+          <PrivateRoute>
+            <AddBook />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/dashboard/edit-book/:id",
+        element: (
+          <PrivateRoute>
+            <EditBook />
+          </PrivateRoute>
+        ),
       },
     ],
   },
