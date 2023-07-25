@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
+import AddBook from "../pages/AddBook";
 import BookDetails from "../pages/BookDetails";
 import Books from "../pages/Books";
 import Home from "../pages/Home";
@@ -26,6 +27,14 @@ const routes = createBrowserRouter([
         element: (
           <PrivateRoute>
             <BookDetails />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/add-book",
+        element: (
+          <PrivateRoute>
+            <AddBook />
           </PrivateRoute>
         ),
       },
