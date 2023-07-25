@@ -1,10 +1,10 @@
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { HiOutlineMenu, HiX } from "react-icons/hi";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import logo from "../assets/images/logo.png";
-import { useAppDispatch } from "../redux/hook";
 import { logout } from "../redux/features/auth/authSlice";
+import { useAppDispatch } from "../redux/hook";
 
 const user = {
   name: "Tom Cook",
@@ -13,8 +13,8 @@ const user = {
     "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
 };
 const navigation = [
-  { name: "Dashboard", to: "/dashboard", current: true },
-  { name: "Add Book", to: "/dashboard/add-book", current: false },
+  { name: "Dashboard", to: "/dashboard" },
+  { name: "Add Book", to: "/dashboard/add-book" },
 ];
 const userNavigation = [
   { name: "Your Profile", to: "/dashboard" },
@@ -42,19 +42,21 @@ export default function DashboardNavbar() {
                     <div className="hidden md:block">
                       <div className="ml-10 flex items-baseline space-x-4">
                         {navigation.map((item) => (
-                          <Link
+                          <NavLink
                             key={item.name}
                             to={item.to}
-                            className={classNames(
-                              item.current
-                                ? "bg-gray-900 text-white"
-                                : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                              "rounded-md px-3 py-2 text-sm font-medium"
-                            )}
-                            aria-current={item.current ? "page" : undefined}
+                            className={(navInfo) =>
+                              classNames(
+                                navInfo.isActive
+                                  ? "bg-gray-900 text-white"
+                                  : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                                "rounded-md px-3 py-2 text-sm font-medium"
+                              )
+                            }
+                            end={true}
                           >
                             {item.name}
-                          </Link>
+                          </NavLink>
                         ))}
                       </div>
                     </div>
@@ -85,17 +87,20 @@ export default function DashboardNavbar() {
                           <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                             {userNavigation.map((item) => (
                               <Menu.Item key={item.name}>
-                                {({ active }) => (
-                                  <a
-                                    href={item.to}
-                                    className={classNames(
-                                      active ? "bg-gray-100" : "",
-                                      "block px-4 py-2 text-sm text-gray-700"
-                                    )}
-                                  >
-                                    {item.name}
-                                  </a>
-                                )}
+                                <NavLink
+                                  to={item.to}
+                                  className={(navInfo) =>
+                                    classNames(
+                                      navInfo.isActive
+                                        ? "bg-gray-100"
+                                        : "bg-white",
+                                      "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    )
+                                  }
+                                  end={true}
+                                >
+                                  {item.name}
+                                </NavLink>
                               </Menu.Item>
                             ))}
                             <Menu.Item>
@@ -135,15 +140,17 @@ export default function DashboardNavbar() {
                   {navigation.map((item) => (
                     <Disclosure.Button
                       key={item.name}
-                      as={Link}
+                      as={NavLink}
                       to={item.to}
-                      className={classNames(
-                        item.current
-                          ? "bg-gray-900 text-white"
-                          : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                        "block rounded-md px-3 py-2 text-base font-medium"
-                      )}
-                      aria-current={item.current ? "page" : undefined}
+                      className={(navInfo: { isActive: boolean }) =>
+                        classNames(
+                          navInfo.isActive
+                            ? "bg-gray-900 text-white"
+                            : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                          "rounded-md px-3 py-2 text-sm font-medium"
+                        )
+                      }
+                      end={true}
                     >
                       {item.name}
                     </Disclosure.Button>
@@ -171,8 +178,8 @@ export default function DashboardNavbar() {
                     {userNavigation.map((item) => (
                       <Disclosure.Button
                         key={item.name}
-                        as="a"
-                        href={item.to}
+                        as={NavLink}
+                        to={item.to}
                         className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
                       >
                         {item.name}
