@@ -11,6 +11,8 @@ import NotFound from "../pages/NotFound";
 import Signup from "../pages/Signup";
 import PrivateRoute from "./PrivateRoute";
 import BookList from "../components/Book/BookList";
+import Wishlist from "../pages/Wishlist";
+import ReadingList from "../pages/ReadingList";
 
 const routes = createBrowserRouter([
   {
@@ -65,6 +67,22 @@ const routes = createBrowserRouter([
         element: (
           <PrivateRoute>
             <EditBook />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/dashboard/wishlist",
+        element: (
+          <PrivateRoute>
+            <Wishlist />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/dashboard/reading-list",
+        element: (
+          <PrivateRoute>
+            <ReadingList />
           </PrivateRoute>
         ),
       },

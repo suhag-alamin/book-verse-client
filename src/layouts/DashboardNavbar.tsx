@@ -16,7 +16,7 @@ const navigation = [
   { name: "Home", to: "/" },
   { name: "Dashboard", to: "/dashboard" },
   { name: "Add Book", to: "/dashboard/add-book" },
-  { name: "Wish List", to: "/dashboard/wish-list" },
+  { name: "Wishlist", to: "/dashboard/wishlist" },
   { name: "Reading List", to: "/dashboard/reading-list" },
 ];
 const userNavigation = [
