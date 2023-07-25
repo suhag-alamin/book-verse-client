@@ -3,12 +3,10 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { IoReaderOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import {
-  useAddToReadingListMutation,
-  useAddToWishlistMutation,
-} from "../../redux/features/book/bookApi";
 import { useAppSelector } from "../../redux/hook";
 import { IBook } from "../../types/globalTypes";
+import { useAddToReadingListMutation } from "../../redux/features/readingList/readingListApi";
+import { useAddToWishlistMutation } from "../../redux/features/wishlist/wishlistApi";
 
 interface IBookCardProps {
   book: IBook;

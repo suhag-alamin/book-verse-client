@@ -47,44 +47,6 @@ const bookApi = api.injectEndpoints({
       }),
       invalidatesTags: ["book", "singleBook"],
     }),
-    getReviews: builder.query({
-      query: (id) => `/review/${id}`,
-      providesTags: ["review"],
-    }),
-    addReview: builder.mutation({
-      query: (reviewData) => ({
-        url: `/review`,
-        method: "POST",
-        body: reviewData,
-      }),
-      invalidatesTags: ["review"],
-    }),
-    addToWishlist: builder.mutation({
-      query: (data) => ({
-        url: `/wishlist`,
-        method: "POST",
-        body: data,
-      }),
-    }),
-    getWishlist: builder.query({
-      query: () => `/wishlist`,
-    }),
-    addToReadingList: builder.mutation({
-      query: (data) => ({
-        url: `/reading-list`,
-        method: "POST",
-        body: data,
-      }),
-    }),
-    getReadingList: builder.query({
-      query: () => `/reading-list`,
-    }),
-    updateReadingListStatus: builder.mutation({
-      query: (id) => ({
-        url: `/reading-list/${id}`,
-        method: "PATCH",
-      }),
-    }),
   }),
 });
 
@@ -96,11 +58,4 @@ export const {
   useGetSingleBookQuery,
   useEditBookMutation,
   useDeleteBookMutation,
-  useGetReviewsQuery,
-  useAddReviewMutation,
-  useAddToWishlistMutation,
-  useGetWishlistQuery,
-  useAddToReadingListMutation,
-  useGetReadingListQuery,
-  useUpdateReadingListStatusMutation,
 } = bookApi;

@@ -6,13 +6,13 @@ import { toast } from "react-toastify";
 import Review from "../components/Book/Review";
 import Loading from "../components/Shared/Loading";
 import {
-  useAddToReadingListMutation,
-  useAddToWishlistMutation,
   useDeleteBookMutation,
   useGetSingleBookQuery,
 } from "../redux/features/book/bookApi";
+import { useAddToReadingListMutation } from "../redux/features/readingList/readingListApi";
 import { useAppSelector } from "../redux/hook";
 import { IBook, ICustomError } from "../types/globalTypes";
+import { useAddToWishlistMutation } from "../redux/features/wishlist/wishlistApi";
 
 const BookDetails = () => {
   // navigate

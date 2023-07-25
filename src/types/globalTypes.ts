@@ -40,6 +40,11 @@ export interface IReadingList {
   user: IAuthor;
   isFinished: boolean;
 }
+export interface IWishlist {
+  _id: string;
+  book: IBook;
+  user: IAuthor;
+}
 
 interface IMeta {
   page: number;

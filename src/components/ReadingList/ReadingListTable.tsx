@@ -1,21 +1,32 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+
 import {
+  useDeleteReadingListMutation,
   useGetReadingListQuery,
   useUpdateReadingListStatusMutation,
-} from "../../redux/features/book/bookApi";
-import { IReadingList } from "../../types/globalTypes";
+} from "../../redux/features/readingList/readingListApi";
+import { ICustomError, IReadingList } from "../../types/globalTypes";
 import Loading from "../Shared/Loading";
 
 const ReadingListTable = () => {
   const { data, isLoading } = useGetReadingListQuery(undefined);
-  console.log(data?.data);
 
   const [
     updateStatus,
     { isSuccess: isUpdateSuccess, isLoading: isUpdateStatusLoading },
   ] = useUpdateReadingListStatusMutation();
+
+  const [
+    deleteReadingList,
+    {
+      isLoading: isDeleteLoading,
+      isSuccess: isDeleteSuccess,
+      isError: isDeleteError,
+      error: deleteError,
+    },
+  ] = useDeleteReadingListMutation();
 
   const navigate = useNavigate();
 
@@ -26,28 +37,33 @@ const ReadingListTable = () => {
     updateStatus(id);
   };
 
-  // const handleDeleteBook = (id: string) => {
-  //   // const confirmDelete = window.confirm(
-  //   //   "Are you sure you want to delete this book?"
-  //   // );
-  //   // // if (confirmDelete) {
-  //   // //   deleteBook(id);
-  //   // // }
-  // };
+  const handleDeleteReadingList = (id: string) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want from reading list?"
+    );
+    if (confirmDelete) {
+      deleteReadingList(id);
+    }
+  };
 
-  // useEffect(() => {
-  //   if (isDeleteSuccess) {
-  //     toast.success("Book deleted successfully!");
-  //     navigate("/dashboard");
-  //   }
-  //   if (isDeleteError) {
-  //     toast.error((deleteError as ICustomError)?.data?.message);
-  //   }
-  // }, [isDeleteSuccess, isDeleteError, deleteError, navigate]);
+  useEffect(() => {
+    if (isDeleteSuccess) {
+      toast.success("Deleted from reading list successfully!", {
+        toastId: "deleteReadingList",
+      });
+    }
+    if (isDeleteError) {
+      toast.error((deleteError as ICustomError)?.data?.message, {
+        toastId: "deleteReadingList",
+      });
+    }
+  }, [isDeleteSuccess, isDeleteError, deleteError, navigate]);
 
   useEffect(() => {
     if (isUpdateSuccess) {
-      toast.success("Book status updated successfully!");
+      toast.success("Book status updated successfully!", {
+        toastId: "updateStatus",
+      });
     }
   }, [isUpdateSuccess]);
   return (
@@ -151,14 +167,15 @@ const ReadingListTable = () => {
                             </button>
                             <button
                               onClick={() => handleChangeStatus(item?._id)}
-                              className="rounded-md bg-bookVersePrimary px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-bookVerseTertiary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bookVerseTertiary"
+                              className="rounded-md bg-bookVersePrimary px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-bookVerseTertiary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bookVerseTertiary disabled:opacity-50 disabled:cursor-not-allowed"
                               disabled={isUpdateStatusLoading}
                             >
                               Mark as finished
                             </button>
                             <button
-                              // onClick={() => handleDeleteBook(item?.book?._id)}
-                              className="rounded-md bg-bookVerseRed px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-bookVerseText focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bookVerseText"
+                              onClick={() => handleDeleteReadingList(item?._id)}
+                              className="rounded-md bg-bookVerseRed px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-bookVerseText focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bookVerseText disabled:opacity-50 disabled:cursor-not-allowed"
+                              disabled={isDeleteLoading}
                             >
                               Delete
                             </button>

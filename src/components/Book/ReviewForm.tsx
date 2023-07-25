@@ -1,5 +1,5 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useAddReviewMutation } from "../../redux/features/book/bookApi";
+import { useAddReviewMutation } from "../../redux/features/review/reviewApi";
 
 interface IProps {
   id: string | undefined;

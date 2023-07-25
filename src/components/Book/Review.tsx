@@ -1,4 +1,4 @@
-import { useGetReviewsQuery } from "../../redux/features/book/bookApi";
+import { useGetReviewsQuery } from "../../redux/features/review/reviewApi";
 import Loading from "../Shared/Loading";
 import ReviewForm from "./ReviewForm";
 import ReviewList from "./ReviewList";
