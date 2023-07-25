@@ -143,7 +143,7 @@ const EditBook = () => {
                   className="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-bookVersePrimary text-white hover:bg-bookVerseTertiary focus:outline-none focus:ring-2 focus:ring-bookVerseTertiary focus:ring-offset-2 transition-all text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={isLoading}
                 >
-                  Edit Book
+                  Update Book
                 </button>
               </div>
             </form>
