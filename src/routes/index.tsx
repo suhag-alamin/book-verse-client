@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
+import BookList from "../components/Dashboard/BookList";
 import AddBook from "../pages/AddBook";
 import BookDetails from "../pages/BookDetails";
 import Books from "../pages/Books";
@@ -8,11 +9,10 @@ import EditBook from "../pages/EditBook";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import NotFound from "../pages/NotFound";
-import Signup from "../pages/Signup";
-import PrivateRoute from "./PrivateRoute";
-import BookList from "../components/Book/BookList";
-import Wishlist from "../pages/Wishlist";
 import ReadingList from "../pages/ReadingList";
+import Signup from "../pages/Signup";
+import Wishlist from "../pages/Wishlist";
+import PrivateRoute from "./PrivateRoute";
 
 const routes = createBrowserRouter([
   {
