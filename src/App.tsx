@@ -22,7 +22,13 @@ function App() {
         // Access token has expired, refresh it
       }
 
-      dispatch(setCredentials({ email: decodedToken?.email, accessToken }));
+      dispatch(
+        setCredentials({
+          _id: decodedToken?._id,
+          email: decodedToken?.email,
+          accessToken,
+        })
+      );
     }
   }, [dispatch]);
 

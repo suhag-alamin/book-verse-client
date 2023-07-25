@@ -69,6 +69,7 @@ const baseQueryWithReAuth = async (
       api.dispatch(
         setCredentials({
           email: user?.email,
+          _id: user?._id,
           accessToken: data.data.accessToken,
         })
       );
@@ -83,5 +84,5 @@ export const api = createApi({
   reducerPath: "api",
   baseQuery: baseQueryWithReAuth,
   endpoints: () => ({}),
-  tagTypes: ["book"],
+  tagTypes: ["book", "review"],
 });

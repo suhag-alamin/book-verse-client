@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -6,6 +6,7 @@ import { useLoginMutation } from "../redux/features/auth/authApi";
 import { setCredentials } from "../redux/features/auth/authSlice";
 import { useAppDispatch } from "../redux/hook";
 import { ICustomError } from "../types/globalTypes";
+import decodeAccessToken from "../utils/decodeToken";
 
 type FormValues = {
   email: string;
@@ -13,13 +14,10 @@ type FormValues = {
 };
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState<string>("");
-
   const [login, { isSuccess, isError, error, data }] = useLoginMutation();
 
   const { register, handleSubmit } = useForm<FormValues>();
   const onSubmit: SubmitHandler<FormValues> = (userData) => {
-    setEmail(userData.email);
     login(userData);
   };
 
@@ -36,25 +34,30 @@ const Login: React.FC = () => {
         data: { accessToken },
       } = data;
 
-      dispatch(
-        setCredentials({
-          accessToken,
-          email,
-        })
-      );
-      // set token to local storage
-      localStorage.setItem("accessToken", data.data.accessToken);
+      if (accessToken) {
+        const decodedToken = decodeAccessToken(accessToken as string);
 
-      toast.success("Login successful. Welcome back!");
+        dispatch(
+          setCredentials({
+            accessToken,
+            email: decodedToken?.email,
+            _id: decodedToken?._id,
+          })
+        );
+        // set token to local storage
+        localStorage.setItem("accessToken", data.data.accessToken);
 
-      navigate(redirectPath);
+        toast.success("Login successful. Welcome back!");
+
+        navigate(redirectPath);
+      }
     }
     if (isError) {
       const signUpError = error as ICustomError;
 
       toast.error(signUpError?.data?.message);
     }
-  }, [isSuccess, navigate, isError, error, data, dispatch, email, location]);
+  }, [isSuccess, navigate, isError, error, data, dispatch, location]);
 
   return (
     <div className="w-full max-w-md mx-auto p-6">

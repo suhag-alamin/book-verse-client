@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 interface IAuthState {
   user: {
+    _id: string | null;
     email: string | null;
   };
   token: string | null;
@@ -9,6 +10,7 @@ interface IAuthState {
 
 const initialState: IAuthState = {
   user: {
+    _id: null,
     email: null,
   },
   token: null,
@@ -19,11 +21,13 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setCredentials: (state, action) => {
-      const { email, accessToken } = action.payload;
+      const { _id, email, accessToken } = action.payload;
+      state.user._id = _id;
       state.user.email = email;
       state.token = accessToken;
     },
     logout: (state) => {
+      state.user._id = null;
       state.user.email = null;
       state.token = null;
 

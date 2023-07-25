@@ -2,8 +2,17 @@ import { api } from "../../api/apiSlice";
 
 const bookApi = api.injectEndpoints({
   endpoints: (builder) => ({
+    addBook: builder.mutation({
+      query: (bookData) => ({
+        url: "/book",
+        method: "POST",
+        body: bookData,
+      }),
+      invalidatesTags: ["book"],
+    }),
     getBooks: builder.query({
       query: (limit) => (limit ? `/book?limit=${limit}` : "/book"),
+      providesTags: ["book"],
     }),
     getAllBooks: builder.query({
       query: ({ page, limit, search, ...filterOptions }) =>
@@ -20,7 +29,7 @@ const bookApi = api.injectEndpoints({
     }),
     getReviews: builder.query({
       query: (id) => `/review/${id}`,
-      providesTags: ["book"],
+      providesTags: ["review"],
     }),
     addReview: builder.mutation({
       query: (reviewData) => ({
@@ -28,12 +37,13 @@ const bookApi = api.injectEndpoints({
         method: "POST",
         body: reviewData,
       }),
-      invalidatesTags: ["book"],
+      invalidatesTags: ["review"],
     }),
   }),
 });
 
 export const {
+  useAddBookMutation,
   useGetBooksQuery,
   useGetAllBooksQuery,
   useGetSingleBookQuery,

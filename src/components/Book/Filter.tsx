@@ -19,7 +19,7 @@ const dropdownOptions: DropdownOption[] = [
   },
   {
     label: "Publication Year",
-    options: ["2022", "2023", "2024", "2025"],
+    options: ["2021", "2022", "2023", "2024", "2025"],
   },
 ];
 
