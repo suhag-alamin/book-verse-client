@@ -1,18 +1,48 @@
 import { useNavigate, useParams } from "react-router-dom";
 import Review from "../components/Book/Review";
 import Loading from "../components/Shared/Loading";
-import { useGetSingleBookQuery } from "../redux/features/book/bookApi";
+import {
+  useDeleteBookMutation,
+  useGetSingleBookQuery,
+} from "../redux/features/book/bookApi";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
+import { ICustomError } from "../types/globalTypes";
 
 const BookDetails = () => {
   const { id } = useParams<{ id: string }>();
 
   const { data, isLoading, isError, isSuccess } = useGetSingleBookQuery(id);
 
+  const [
+    deleteBook,
+    { isError: isDeleteError, error: deleteError, isSuccess: isDeleteSuccess },
+  ] = useDeleteBookMutation();
+
   const navigate = useNavigate();
 
   const handleEditBook = () => {
     navigate(`/book/edit/${id}`);
   };
+
+  const handleDeleteBook = () => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this book?"
+    );
+    if (confirmDelete) {
+      deleteBook(id);
+    }
+  };
+
+  useEffect(() => {
+    if (isDeleteSuccess) {
+      toast.success("Book deleted successfully!");
+      navigate("/books");
+    }
+    if (isDeleteError) {
+      toast.error((deleteError as ICustomError)?.data?.message);
+    }
+  }, [isDeleteSuccess, isDeleteError, deleteError, navigate]);
 
   if (isLoading) {
     return <Loading />;
@@ -29,7 +59,10 @@ const BookDetails = () => {
             >
               Edit
             </button>
-            <button className="rounded-md bg-bookVerseRed px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-bookVerseText focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bookVerseText">
+            <button
+              onClick={handleDeleteBook}
+              className="rounded-md bg-bookVerseRed px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-bookVerseText focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bookVerseText"
+            >
               Delete
             </button>
           </div>

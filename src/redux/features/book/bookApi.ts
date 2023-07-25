@@ -23,6 +23,7 @@ const bookApi = api.injectEndpoints({
               .map((key) => `${key}=${filterOptions[key]}`)
               .join("&")}`
           : `/book?page=${page}&limit=${limit}`,
+      providesTags: ["book"],
     }),
     getSingleBook: builder.query({
       query: (id) => `/book/${id}`,
@@ -35,6 +36,13 @@ const bookApi = api.injectEndpoints({
         body: updatedData,
       }),
       invalidatesTags: ["singleBook"],
+    }),
+    deleteBook: builder.mutation({
+      query: (id) => ({
+        url: `/book/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["book", "singleBook"],
     }),
     getReviews: builder.query({
       query: (id) => `/review/${id}`,
@@ -57,6 +65,7 @@ export const {
   useGetAllBooksQuery,
   useGetSingleBookQuery,
   useEditBookMutation,
+  useDeleteBookMutation,
   useGetReviewsQuery,
   useAddReviewMutation,
 } = bookApi;
