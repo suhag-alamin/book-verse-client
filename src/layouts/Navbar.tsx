@@ -69,7 +69,6 @@ const Navbar = () => {
           {email ? (
             <button
               onClick={() => dispatch(logout())}
-              // make outline button using tailwind
               className="py-2 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-bookVersePrimary font-semibold hover:text-white focus:text-white hover:bg-bookVerseTertiary focus:outline-none focus:ring-2 focus:ring-bookVerseTertiary focus:ring-offset-2 transition-all text-sm"
             >
               Log Out
