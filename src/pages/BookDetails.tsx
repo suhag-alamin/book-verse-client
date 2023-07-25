@@ -1,13 +1,17 @@
+import { useEffect } from "react";
+import { AiOutlineHeart } from "react-icons/ai";
+import { IoReaderOutline } from "react-icons/io5";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import Review from "../components/Book/Review";
 import Loading from "../components/Shared/Loading";
 import {
+  useAddToWishlistMutation,
   useDeleteBookMutation,
   useGetSingleBookQuery,
 } from "../redux/features/book/bookApi";
-import { useEffect } from "react";
-import { toast } from "react-toastify";
-import { ICustomError } from "../types/globalTypes";
+import { useAppSelector } from "../redux/hook";
+import { IBook, ICustomError } from "../types/globalTypes";
 
 const BookDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -18,6 +22,17 @@ const BookDetails = () => {
     deleteBook,
     { isError: isDeleteError, error: deleteError, isSuccess: isDeleteSuccess },
   ] = useDeleteBookMutation();
+
+  const [
+    addToWishList,
+    {
+      isLoading: isAddWishlistLoading,
+      isSuccess: isAddWishlistSuccess,
+      data: wishlistData,
+    },
+  ] = useAddToWishlistMutation();
+
+  const { _id } = useAppSelector((state) => state.auth.user);
 
   const navigate = useNavigate();
 
@@ -34,6 +49,14 @@ const BookDetails = () => {
     }
   };
 
+  const handleAddToWishlist = (book: IBook) => {
+    const data = {
+      book: book._id,
+      user: _id,
+    };
+    addToWishList(data);
+  };
+
   useEffect(() => {
     if (isDeleteSuccess) {
       toast.success("Book deleted successfully!");
@@ -43,6 +66,15 @@ const BookDetails = () => {
       toast.error((deleteError as ICustomError)?.data?.message);
     }
   }, [isDeleteSuccess, isDeleteError, deleteError, navigate]);
+
+  useEffect(() => {
+    if (isAddWishlistSuccess && wishlistData?.data === null) {
+      toast.info("Book already added to wishlist!");
+    }
+    if (isAddWishlistSuccess && wishlistData?.data !== null) {
+      toast.success("Book added to wishlist successfully!");
+    }
+  }, [isAddWishlistSuccess, wishlistData]);
 
   if (isLoading) {
     return <Loading />;
@@ -89,6 +121,23 @@ const BookDetails = () => {
                 Publication Year: {data?.data?.publicationYear}
               </p>
               <p className="my-2 text-gray-800 ">{data?.data?.description}</p>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => handleAddToWishlist(data?.data)}
+                  title="Add to Wishlist"
+                  className="mt-3 py-2 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-bookVerseTertiary text-white hover:bg-bookVersePrimary focus:outline-none focus:ring-2 focus:ring-bookVersePrimary focus:ring-offset-2 transition-all text-x disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={isAddWishlistLoading}
+                >
+                  <AiOutlineHeart />
+                </button>
+
+                <button
+                  title="Add to Reading List"
+                  className="mt-3 py-2 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-bookVersePrimary text-white hover:bg-bookVerseTertiary focus:outline-none focus:ring-2 focus:ring-bookVerseTertiary focus:ring-offset-2 transition-all text-x  disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <IoReaderOutline />
+                </button>
+              </div>
             </div>
           </div>
           <div className="py-8">

@@ -1,4 +1,10 @@
+import { useEffect } from "react";
+import { AiOutlineHeart } from "react-icons/ai";
+import { IoReaderOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useAddToWishlistMutation } from "../../redux/features/book/bookApi";
+import { useAppSelector } from "../../redux/hook";
 import { IBook } from "../../types/globalTypes";
 
 interface IBookCardProps {
@@ -6,6 +12,34 @@ interface IBookCardProps {
 }
 
 const BookCard = ({ book }: IBookCardProps) => {
+  const [
+    addToWishList,
+    {
+      isLoading: isAddWishlistLoading,
+      isSuccess: isAddWishlistSuccess,
+      data: wishlistData,
+    },
+  ] = useAddToWishlistMutation();
+
+  const { _id } = useAppSelector((state) => state.auth.user);
+
+  const handleAddToWishlist = (book: IBook) => {
+    const data = {
+      book: book._id,
+      user: _id,
+    };
+    addToWishList(data);
+  };
+
+  useEffect(() => {
+    if (isAddWishlistSuccess && wishlistData?.data === null) {
+      toast.info("Book already added to wishlist!");
+    }
+    if (isAddWishlistSuccess && wishlistData?.data !== null) {
+      toast.success("Book added to wishlist successfully!");
+    }
+  }, [isAddWishlistSuccess, wishlistData]);
+
   return (
     <div>
       <div className="flex flex-col bg-white border shadow-sm rounded-xl ">
@@ -25,12 +59,30 @@ const BookCard = ({ book }: IBookCardProps) => {
           <p className="my-2 text-gray-800 ">
             {book?.description.slice(0, 100)}...
           </p>
-          <Link
-            className="mt-3 py-2 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-bookVerseTertiary text-white hover:bg-bookVersePrimary focus:outline-none focus:ring-2 focus:ring-bookVersePrimary focus:ring-offset-2 transition-all text-sm "
-            to={`/books/${book?._id}`}
-          >
-            Details
-          </Link>
+          <div className="flex justify-between items-center">
+            <Link
+              className="mt-3 py-2 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-bookVerseTertiary text-white hover:bg-bookVersePrimary focus:outline-none focus:ring-2 focus:ring-bookVersePrimary focus:ring-offset-2 transition-all text-sm "
+              to={`/books/${book?._id}`}
+            >
+              Details
+            </Link>
+            <div className="flex gap-2">
+              <button
+                onClick={() => handleAddToWishlist(book)}
+                title="Add to Wishlist"
+                className="mt-3 py-2 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-bookVerseTertiary text-white hover:bg-bookVersePrimary focus:outline-none focus:ring-2 focus:ring-bookVersePrimary focus:ring-offset-2 transition-all text-x disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={isAddWishlistLoading}
+              >
+                <AiOutlineHeart />
+              </button>
+              <button
+                title="Add to Reading List"
+                className="mt-3 py-2 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-bookVersePrimary text-white hover:bg-bookVerseTertiary focus:outline-none focus:ring-2 focus:ring-bookVerseTertiary focus:ring-offset-2 transition-all text-x disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <IoReaderOutline />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
